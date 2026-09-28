@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv*/
+venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+.env.*
+
+# Data (raw/interim/processed) — keep the folder structure via .gitkeep
+data/raw/**
+!data/raw/**/
+!data/raw/**/.gitkeep
+
+data/interim/**
+!data/interim/.gitkeep
+
+data/processed/**
+!data/processed/.gitkeep
+
+# Common geospatial / tabular data formats, wherever they show up
+*.gpkg
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+*.cpg
+*.tif
+*.tiff
+*.geojson
+*.gdb/
+*.csv
+*.parquet
+*.xlsx
+*.xls
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Jupyter
+*.ipynb_checkpoints
+
+# Public raw inputs that ARE committed (everything else under data/ stays local)
+!data/raw/vectors/EPA_walkabilityindex_2025_georgia_blockgroup.gpkg
+!data/raw/vectors/MARTA_railstations_2025_georgia_zipcode.gpkg
+!data/raw/vectors/LandPro_2012.shp
+!data/raw/vectors/LandPro_2012.shx
+!data/raw/vectors/LandPro_2012.dbf
+!data/raw/vectors/LandPro_2012.prj
+!data/raw/vectors/LandPro_2012.cpg
+!data/raw/vectors/LandPro_2012.shp.xml
+
+# Local-only working files (not published)
+.claude/
+docs/atlanta_project_claude_code_handoff.md
