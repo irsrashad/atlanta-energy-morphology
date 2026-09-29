@@ -70,3 +70,5 @@ docs/atlanta_project_claude_code_handoff.md
 # ZIP-level master table and its data dictionary (committed)
 !data/interim/zipcode_joined.gpkg
 !data/processed/zipcode_data_dictionary.csv
+!data/processed/zipcode_master.csv
+!data/processed/zipcode_master.xlsx

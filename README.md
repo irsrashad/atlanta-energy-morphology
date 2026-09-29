@@ -36,7 +36,8 @@ regenerate them after adding data.
 ## How to reproduce
 
 The ZIP-level master table (`data/interim/zipcode_joined.gpkg`, 190 ZIPs) and its data dictionary
-(`data/processed/zipcode_data_dictionary.csv`) are committed. The other input data is not in the repository:
+(`data/processed/zipcode_data_dictionary.csv`) are committed, with a CSV and Excel copy of the table
+without geometry (`data/processed/zipcode_master.csv`, `.xlsx`). The other input data is not in the repository:
 `data/` is otherwise gitignored, and some inputs are study data that is not redistributed. See the **"Reproducing this notebook"** cell at the top of
 `notebooks/01_data_preparation.ipynb` for:
 - the environment setup (`pip install -r requirements.txt`, with pinned versions);
