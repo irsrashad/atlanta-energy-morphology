@@ -1,0 +1,449 @@
+column,description,unit,source,method
+STATEFP10,State FIPS code (13 = Georgia),code,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+ZCTA5CE10,5-digit ZCTA code; source of the ZIP5 key,code,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+GEOID10,State FIPS + ZCTA,code,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+CLASSFP10,Census class code,code,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+MTFCC10,MAF/TIGER feature class code,code,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+FUNCSTAT10,Functional status,code,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+ALAND10,Land area (not used; see zip_area_sqft),sq m,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+AWATER10,Water area,sq m,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+INTPTLAT10,Latitude of the Census internal point,degrees,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+INTPTLON10,Longitude of the Census internal point,degrees,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+PARTFLG10,Partial-ZCTA flag,flag,TIGER/Line 2010 ZCTA,"From the base layer, unchanged"
+energy_kwh,Observed residential energy use (identical to energy_actual_kwh),kWh/yr,Energy table (ArcGIS join),"From the base layer, unchanged"
+pop,Total population,persons,Energy table (ArcGIS join),"From the base layer, unchanged"
+zipcode,ZIP code as float (ArcGIS rename of ZipCode; not a key),code,Energy table (ArcGIS join),"From the base layer, unchanged"
+OBJECTID_1,ArcGIS object ID of the joined energy table,id,ArcGIS,"From the base layer, unchanged"
+ZCTA,"ZCTA code as float, from the prediction table",code,Model predictions (ArcGIS join),"From the base layer, unchanged"
+lat,Latitude used in the model workbooks,degrees,Model predictions (ArcGIS join),"From the base layer, unchanged"
+lon,Longitude used in the model workbooks,degrees,Model predictions (ArcGIS join),"From the base layer, unchanged"
+pred_RF_train_kwh,"Random-forest prediction, training fit (was predictedR)",kWh/yr,Prior ZIP-level energy model via ArcGIS layer,Renamed; verified 100% against RF_ZCTA_Estimates
+pred_RF_cv_kwh,"Random-forest prediction, cross-validated (was predicte_1)",kWh/yr,Prior ZIP-level energy model via ArcGIS layer,Renamed; verified 100% against RF_ZCTA_Estimates
+pred_MATLAB_kwh,"MATLAB regression prediction, unreliable (was predictedm)",kWh/yr,Prior ZIP-level energy model via ArcGIS layer,Renamed; verified 100% against RF_ZCTA_Estimates
+energy_actual_kwh,Observed residential energy use (was actual),kWh/yr,Energy table via ArcGIS layer,Renamed; equals se_resid_energy_kwh of the SE source
+OBJECTID_2,ArcGIS object ID of the joined prediction table,id,ArcGIS,"From the base layer, unchanged"
+cluster,HIGH / LOW energy cluster (analyst judgment call),category,Model predictions (ArcGIS join),"From the base layer, unchanged"
+Shape_Leng,Perimeter computed by ArcGIS,ft,ArcGIS,"From the base layer, unchanged"
+Shape_Area,Area computed by ArcGIS,sq ft,ArcGIS,"From the base layer, unchanged"
+ZIP5,Join key: 5-character zero-padded ZCTA code,text,TIGER/Line 2010 ZCTA,ZCTA5CE10 as zero-padded string
+zip_area_sqft,Planar ZIP polygon area (denominator of area metrics),sq ft,TIGER/Line 2010 ZCTA,geometry.area in EPSG:2240
+Dist_CBD_mi,Euclidean distance from ZIP representative point to CBD representative point,mi,Atlanta CBD polygon (provided with the study data),"Distance in EPSG:2240 ft / 5,280"
+MARTA_stations_in_zip,Number of MARTA rail stations within the ZIP,count,MARTA rail stations 2025,Point-in-polygon (within); 0 where none
+has_MARTA_station,ZIP contains at least one MARTA rail station,boolean,MARTA rail stations 2025,MARTA_stations_in_zip > 0
+Dist_MARTA_Rail_mi,Euclidean distance from ZIP representative point to nearest MARTA rail station,mi,MARTA rail stations 2025,"sjoin_nearest in EPSG:2240 ft / 5,280"
+Nearest_MARTA_Station,Name of the nearest MARTA rail station,text,MARTA rail stations 2025,sjoin_nearest (ties: first)
+NatWalkInd_zip,EPA National Walkability Index,index 1-20,"EPA NWI v3.0, block groups",Area-weighted mean over ZIP x block-group overlay
+D3B_zip,Pedestrian-oriented street-intersection density,intersections / sq mi,"EPA NWI v3.0, block groups",Area-weighted mean over ZIP x block-group overlay
+ms_bldg_count,Number of Microsoft building footprints,count,Microsoft US Building Footprints 2018-2020,Buildings assigned by representative point within ZIP
+ms_sum_area_sqft,Total building footprint area,sq ft,Microsoft US Building Footprints 2018-2020,Sum of footprint areas (EPSG:2240)
+ms_mean_area_sqft,Mean building footprint area,sq ft,Microsoft US Building Footprints 2018-2020,Mean of footprint areas (EPSG:2240)
+ms_max_area_sqft,Largest building footprint area,sq ft,Microsoft US Building Footprints 2018-2020,Max of footprint areas (EPSG:2240)
+ms_bldg_coverage_ratio,Share of ZIP area covered by building footprints,sq ft / sq ft,Microsoft US Building Footprints 2018-2020,ms_sum_area_sqft / zip_area_sqft
+se_v001,Number; SEX AND AGE - Total population,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v002,Pop 5 to 24,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v003,Pop 24-44,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v004,Pop 45-65,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v005,Pop 65 older,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v006,younger (5-44),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v007,Older (44+),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v008,Number; SEX AND AGE - Total population - Median age (years),count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v009,Number; SEX AND AGE - Male population,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v010,Number; SEX AND AGE - Male population - Median age (years),count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v011,male Population younger than 18,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v012,Number; SEX AND AGE - Male population - 18 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v013,Number; SEX AND AGE - Male population - 21 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v014,Number; SEX AND AGE - Male population - 62 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v015,Number; SEX AND AGE - Female population,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v016,Number; SEX AND AGE - Female population - Median age (years),count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v017,Female Population younger than 18,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v018,Number; SEX AND AGE - Female population - 18 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v019,Number; SEX AND AGE - Female population - 21 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v020,Number; SEX AND AGE - Female population - 62 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v021,Number; RACE - Total population - One Race,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v022,White with Hispanic,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v023,Number; RACE - Total population - One Race - Black or African American,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v024,Number; RACE - Total population - One Race - American Indian and Alaska Native,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v025,Number; RACE - Total population - One Race - Asian,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v026,Number; RACE - Total population - One Race - Native Hawaiian and Other Pacific Islander,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v027,Number; RACE - Total population - One Race - Native Hawaiian and Other Pacific Islander - Native Hawaiian,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v028,Number; RACE - Total population - One Race - Native Hawaiian and Other Pacific Islander - Guamanian or Chamorro,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v029,Number; RACE - Total population - One Race - Native Hawaiian and Other Pacific Islander - Samoan,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v030,Number; RACE - Total population - One Race - Native Hawaiian and Other Pacific Islander - Other Pacific Islander [2],count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v031,Number; RACE - Total population - One Race - Some Other Race,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v032,Number; RACE - Total population - Two or More Races,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v033,Total Hispanic all races,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v034,Hispanic White,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v035,Number; HISPANIC OR LATINO AND RACE - Total population - Not Hispanic or Latino - White alone,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v036,White alone population (non hispanic) / Black(AA) population.,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v037,Number; RELATIONSHIP - Total population - In households,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v038,Number; RELATIONSHIP - Total population - In households - Householder,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v039,Number; RELATIONSHIP - Total population - In households - Spouse [6],count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v040,Number; RELATIONSHIP - Total population - In households - Child,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v041,Number; RELATIONSHIP - Total population - In group quarters,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v042,Number; RELATIONSHIP - Total population - In group quarters - Institutionalized population,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v043,Number; RELATIONSHIP - Total population - In group quarters - Institutionalized population - Male,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v044,Number; RELATIONSHIP - Total population - In group quarters - Institutionalized population - Female,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v045,Number; RELATIONSHIP - Total population - In group quarters - Noninstitutionalized population,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v046,Number; RELATIONSHIP - Total population - In group quarters - Noninstitutionalized population - Male,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v047,Number; RELATIONSHIP - Total population - In group quarters - Noninstitutionalized population - Female,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v048,Total Population / Number of Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v049,Number; HOUSEHOLDS BY TYPE - Total households - Family households (families) [7],count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v050,Number; HOUSEHOLDS BY TYPE - Total households - Family households (families) [7] - With own children under 18 years,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v051,Number; HOUSEHOLDS BY TYPE - Total households - Family households (families) [7] - Husband-wife family,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v052,Number; HOUSEHOLDS BY TYPE - Total households - Family households (families) [7] - Husband-wife family - With own children under 18 years,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v053,Number; HOUSEHOLDS BY TYPE - Total households - Nonfamily households [7],count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v054,Number; HOUSEHOLDS BY TYPE - Total households - Nonfamily households [7] - Householder living alone,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v055,Number; HOUSEHOLDS BY TYPE - Total households - Nonfamily households [7] - Householder living alone - Male,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v056,Number; HOUSEHOLDS BY TYPE - Total households - Nonfamily households [7] - Householder living alone - Male - 65 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v057,Number; HOUSEHOLDS BY TYPE - Total households - Nonfamily households [7] - Householder living alone - Female,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v058,Number; HOUSEHOLDS BY TYPE - Total households - Nonfamily households [7] - Householder living alone - Female - 65 years and over,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v059,Total Population / Number of housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v060,Number; HOUSING OCCUPANCY - Total housing units - Occupied housing units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v061,Number; HOUSING OCCUPANCY - Total housing units - Vacant housing units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v062,Number; HOUSING OCCUPANCY - Total housing units - Vacant housing units - For rent,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v063,Number; HOUSING OCCUPANCY - Total housing units - Occupied housing units [dup 2],count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v064,Number; HOUSING TENURE - Occupied housing units - Owner-occupied housing units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v065,100*Pop in Owner Occupied housing units/Population,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v066,Number; HOUSING TENURE - Occupied housing units - Renter-occupied housing units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v067,100*Pop in Renter Occupied housing units/Population,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v068,Owner Occupied Housing Size: Pop in Owner Occupied Housing/Owner Occupied Housing Unit,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v069,Renter Occupied Housing Size: Pop in Renter Occupied Housing/Renter Occupied Housing Unit,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v070,100*White Occupied Owned Housing Units/Tot Number of Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v071,100*Black Occupied Owned Housing Units/Tot Number of Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v072,100*White Occupied Owned Housing Units/Tot Number of Owned Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v073,100*Black Occupied Owned Housing Units/Tot Number of Owned Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v074,100*White Occupied Rented Housing Units/Tot Number of Rent Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v075,100*Black Occupied Rented Housing Units/Tot Number of Rent Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v076,100* No of Family Type Households/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v077,100* No of Non-Family Type Households/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v078,Total Population/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v079,Ratio of young age Family householder to old age Family householder >44,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v080,Ratio of young age Non-Family householder to old age Non-Family householder >44,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v081,Number of Housing units per Total Number of Households,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v082,100*Owner Occupied by Age < 24/Total Owner Ocuppied Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v083,100*Owner Occupied by Age 25-55/Total Owner Ocuppied Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v084,100*Owner Occupied by Age >55/Total Owner Ocuppied Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v085,100*Rent Occupied by Age < 24/Total Rent Ocuppied Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v086,100*Rent Occupied by Age 25-55/Total Rent Ocuppied Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v087,100*Rent Occupied by Age >55/Total Rent Ocuppied Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v088,100*Owner Occupied by Age < 24/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v089,100*Owner Occupied by Age 25-55/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v090,100*Owner Occupied by Age >55/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v091,100*Rent Occupied by Age < 24/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v092,100*Rent Occupied by Age 25-55/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v093,100*Rent Occupied by Age >55/Total Households,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v094,100*Owner occupied: - 1-person household/Total Owner Ocuppied House Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v095,100*Owner occupied: - 2-person household/Total Owner Ocuppied House Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v096,100*Owner occupied: - 3-person household/Total Owner Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v097,100*Owner occupied: - 4-person household/Total Owner Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v098,100*Owner occupied: - 5-person household/Total Owner Ocuppied House Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v099,100*Owner occupied: - 6-person household/Total Owner Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v100,100*Owner occupied: - 7-or-more-person household/Total Owner Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v101,100*Renter occupied: - 1-person household/Total Rent Ocuppied House Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v102,100*Renter occupied: - 2-person household/Total Rent Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v103,100*Renter occupied: - 3-person household/Total Rent Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v104,100*Renter occupied: - 4-person household/Total Rent Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v105,100*Renter occupied: - 5-person household/Total Rent Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v106,100*Renter occupied: - 6-person household/Total Rent Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v107,100*Renter occupied: - 7-or-more-person household/Total Rent Ocuppied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v108,100*1 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v109,100*2 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v110,100*3 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v111,100*4 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v112,100*5 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v113,100*6 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v114,100*7 people households/Total Number of Occupied House units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v115,Percent Owner occupied: - 1-person household over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v116,Percent Owner occupied: - 2-person household  over total units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v117,Percent Owner occupied: - 3-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v118,Percent Owner occupied: - 4-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v119,Percent Owner occupied: - 5-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v120,Percent Owner occupied: - 6-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v121,Percent Owner occupied: - 7-or-more-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v122,Percent Renter occupied: - 1-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v123,Percent Renter occupied: - 2-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v124,Percent Renter occupied: - 3-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v125,Percent Renter occupied: - 4-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v126,Percent Renter occupied: - 5-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v127,Percent Renter occupied: - 6-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v128,Percent Renter occupied: - 7-or-more-person household  over total occupied units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v129,Ratio of Population per Occupied Housisng Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v130,Percent of Owner occupied Units where Householder who is White alone,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v131,Percent of Owner occupied Units where Householder who is Black or African American alone,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v132,Percent of Renter occupied Units where Householder who is White alone,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v133,Percent of Renter occupied Units where Householder who is Black or African American alone,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v134,Ratio of White Owned Occupied Units to Black Owned Occupied Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v135,Ratio of White Rent Occupied Units to Black Rent Occupied Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v136,Percent of White alone not Hispanic mortgage Occupied units/Total White Ocupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v137,Percent of Black mortgage Occupied units/Total Black Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v138,Percent of Hispanic mortgage occupied units/Total Hispanic Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v139,White alone not Hispanic mortgage free units/Total White Occupied Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v140,Black mortgage free Occupied Units/Total Black occupied units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v141,Hispanic mortagage free occupied units/Total Hispanic Occupied units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v142,White alone not Hispanic rent/Total White Occupied Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v143,Black rent/Total Black occupied units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v144,Hispanic rent/Total Hispanice occupied units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v145,Percent total Pop in mortage occupied units/Total Population in Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v146,Percent total pop in mortgate free/Total Population in Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v147,Percent total pop in rent/Total Population in Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v148,Percent of Occupied with Mortgage/Total Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v149,Percent of Occupied Mortgate Free/Total Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v150,Percent of Occupied Rent/Total Occupied Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v151,"Percent; UNITS IN STRUCTURE - 1-unit, detached of Total Housing Units",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v152,"Percent; UNITS IN STRUCTURE - 1-unit, attached of Total Housing Units",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v153,"Percent; UNITS IN STRUCTURE - 2-unit, attached of Total Housing Units",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v154,Percent; UNITS IN STRUCTURE - 3 or 4 units of Total Housing Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v155,Percent; UNITS IN STRUCTURE - 5 to 9 units of Total Housing Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v156,Percent; UNITS IN STRUCTURE - 10 to 19 units of Total Housing Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v157,Percent; UNITS IN STRUCTURE - 20 or more units of Total Housing Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v158,Percent; UNITS IN STRUCTURE - Mobile home of Total Housing Units,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v159,"Percent; UNITS IN STRUCTURE - Boat, RV, van-etc., attached of Total Housing Units",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v160,Estimate; ROOMS - Median rooms,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v161,Estimate; VALUE - Median (dollars),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v162,Estimate; GROSS RENT - Median-(dollars),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v163,No of units built 2004-1990,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v164,No of units built 1990-1970,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v165,No of units built 1960 and older,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v166,Population that is over 16 to work,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v167,Percent; EMPLOYMENT STATUS - In labor force pop over 16,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v168,Percent; EMPLOYMENT STATUS - Percent Unemployed  pop over 16,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v169,Percent; EMPLOYMENT STATUS - All parents in family in labor force  pop over 16,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v170,"Percent; COMMUTING TO WORK - Car, truck, or van -- drove alone  pop over 16",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v171,"Percent; COMMUTING TO WORK - Car, truck, or van -- carpooled  pop over 16",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v172,Percent; COMMUTING TO WORK - Public transportation (excluding taxicab)  pop over 16,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v173,"Percent; COMMUTING TO WORK-Walk, attached of Total Housing Commuting  pop over 16",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v174,Estimate; COMMUTING TO WORK - Mean travel time to work (minutes),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v175,"Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - $15,000 to $24,999",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v176,"Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - $75,000 to $99,999",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v177,"Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - $200,000 or more",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v178,Estimate; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - Median household income (dollars),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v179,Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - With earnings,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v180,"Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - $15,000 to $24,999 [dup 2]",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v181,"Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - $75,000 to $99,999 [dup 2]",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v182,"Percent; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - $200,000 or more [dup 2]",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v183,Estimate; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - Median family income (dollars),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v184,Estimate; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - Per capita income (dollars),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v185,Estimate; INCOME AND BENEFITS (IN 2011 INFLATION-ADJUSTED DOLLARS) - Median nonfamily income (dollars),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v186,Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - All families,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v187,Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - Married couple families,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v188,Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - Married couple families - With related children under 18 years,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v189,"Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - Families with female householder, no husband present",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v190,"Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - Families with female householder, no husband present - With related children under 18 years",%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v191,Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - All people,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v192,Percent; PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL - Unrelated individuals 15 years and over,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v193,100*Owned with complete facilities/Total owned occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v194,100*Owned with incomplete facilities/Total owned occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v195,100*Rented with complete facilities/Total Rented occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v196,100*Rented with incomplete facilities/Total Rented occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v197,100* Total occupied with complete facilities/Total housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v198,100* Total occupied with incomplete facilities/Total housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v199,100*Owned with complete facilities/Total housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v200,100*Owned with incomplete facilities/Total housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v201,100*Rented with complete facilities/Total housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v202,100*Rented with incomplete facilities/Total housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v203,Ratio of occupied complete facilities/Occupied with Incomplete Facilities,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v204,100*Units with complete facilities/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v205,100*Units with incomplete facilities/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v206,Ratio of  Housing units with incomplete facilities/Housing units with Complete Facilities,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v207,Housing units with complete facilities/Total Population,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v208,100*Housing units with complete plumbing with <1 occupant per room/Total Housing units with complete plumbing,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v209,100*Housing units built later than 1950 with complete plumbing with <1 occupant per room/Total Housing units with complete plumbing,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v210,100*Housing units built later than (1940-1949) with complete plumbing with <1 occupant per room/Total Housing units with complete plumbing,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v211,100*Housing units built later than (1930-1939) with complete plumbing with <1 occupant per room/Total Housing units with complete plumbing,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v212,100*Housing units with complete plumbing with >1 occupant per room/Total Housing units with complete plumbing,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v213,100*Number of owned occupied house units with >= 1 vehicle/Total Owner occupied Housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v214,100*Number of rent occupied house units with >= 1 vehicle/Total rent occupied Housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v215,100*Total occupied units (rent & owned) with >=1 vehicle/Total occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v216,100*Total occupied units (rent & owned) with no vehicle/Total occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v217,100*Total owned occupied units with >= 1 vehicle/Total occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v218,100*Total rent occupied units with >= 1 vehicle/Total occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v219,Ratio of occupied rented housing units with >= 1 vehicle/owner occupied housing unit with >= 1 vehicle,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v220,100*No of Housing units with no bedroom/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v221,100*No of Housing units with 1 bedroom/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v222,100*No of Housing units with 2 bedroom/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v223,100*No of Housing units with 3 bedroom/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v224,100*No of Housing units with 4 bedroom/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v225,100*No of Housing units with >=5 bedroom/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v226,Cummulative Percentage of Housing units with zero bedrooms,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v227,Cummulative Percentage of Housing units with zero to 1 bedroom,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v228,Cummulative Percentage of Housing units with zero to 2 bedrooms,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v229,Cummulative Percentage of Housing units with zero to 3 bedrooms,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v230,Cummulative Percentage of Housing units with zero to 4 bedrooms,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v231,100*No of occupied Housing Units with Utility gas/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v232,100*No of occupied Housing Units with Bottled gas/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v233,100*No of occupied Housing Units with Electricity/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v234,100*No of occupied Housing Units with Fuel oil_Kerosene/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v235,100*No of occupied Housing Units with Coal or coke/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v236,100*No of occupied Housing Units with Wood/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v237,100*No of occupied Housing Units with Solar energy/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v238,100*No of occupied Housing Units with Other Fuel/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v239,100*No of occupied Housing Units with No Fuel Used/Total Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v240,Estimate; Gini Index,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v241,100*Total Number of Owner Occupied Households with montly costs <$100/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v242,100*Total Number of Owner Occupied Households with montly costs from $100 to $199/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v243,100*Total Number of Owner Occupied Households with montly costs from $200 to $299/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v244,100*Total Number of Owner Occupied Households with montly costs from $300 to $399/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v245,100*Total Number of Owner Occupied Households with montly costs from $400 to $499/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v246,100*Total Number of Owner Occupied Households with montly costs from $500 to $599/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v247,100*Total Number of Owner Occupied Households with montly costs from $600 to $699/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v248,100*Total Number of Owner Occupied Households with montly costs from $700 to $799/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v249,100*Total Number of Owner Occupied Households with montly costs from $800 to $899/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v250,100*Total Number of Owner Occupied Households with montly costs from $900 to $999/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v251,100*Total Number of Owner Occupied Households with montly costs from $1000 to $1499/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v252,100*Total Number of Owner Occupied Households with montly costs from $1500 to $1999/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v253,100*Total Number of Owner Occupied Households with montly costs from >= $2000/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v254,100* Total Number of Owner Occupied Households with montly costs from =< $1000/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v255,100* Total Number of Owner Occupied Households with montly costs from >= $1000/Total Owner Occupied Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v256,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $100,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v257,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $199,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v258,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $299,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v259,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $399,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v260,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $499,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v261,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $599,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v262,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $699,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v263,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $799,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v264,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $899,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v265,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $999,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v266,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $1499,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v267,Cummulative Percentage of Owner Occupied Housing units with monthly costs =< $1999,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v268,Pop divided by percent sum of houses with monthly housing costs less than $1000,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v269,Ratio of Owner Occupied Housing units with monthly costs >$1000/ Owner Occupied Housing units with monthly costs < $1000,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v270,Estimate; Median monthly housing costs,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v271,Number of Housing Units Built 2005 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v272,100*Number of Housing Units Built 2000 to 2004 or later/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v273,100*Number of Housing Units Built 1990 to 1999 or later/Total Housing Units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v274,Number of Housing Units Built 1980 to 1989 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v275,Number of Housing Units Built 1970 to 1979 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v276,Number of Housing Units Built 1960 to 1969 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v277,Number of Housing Units Built 1950 to 1959 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v278,Number of Housing Units Built 1940 to 1949 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v279,Number of Housing Units Built 1939 or later/Total Housing Units,count,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v280,Cummulative Percentage of Housing units built between 2005 and 1990,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v281,Cummulative Percentage of Housing units built between 1960 and 1990,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v282,Cummulative Percentage of Housing units built before 1960,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v283,1950s,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v284,1960s,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v285,1970s,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v286,1980s,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v287,1990s,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v288,2000s,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v289,Percent Tot Male Pop No  HS  School degree/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v290,Percent Tot Male Pop High school Diploma/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v291,Percent Tot Male Pop associate and some college/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v292,Percent: Tot Male Pop Bacherlor and higher/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v293,Percent Tot Male Pop No  HS  School degree/>25yr Tot Male Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v294,Percent Tot Male Pop High school Diploma/>25yr Tot Male Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v295,Percent Tot Male Pop associate and some college/>25yr Tot Male Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v296,Percent Tot Male Pop Bacehlor and Higher degree/>25yr Tot Male Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v297,Percent Tot Female Pop No  HS  School degree/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v298,Percent Tot Female Pop High school Diploma/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v299,Percent Tot Female Pop associate and some college/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v300,Percent: Tot Female Pop Bacherlor and higher/Tot >25yr Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v301,Percent Tot Female Pop No  HS  School degree/>25yr Tot Female Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v302,Percent Tot Female Pop High school Diploma/>25yr Tot Female Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v303,Percent Tot Female Pop associate and some college/>25yr Tot Female Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v304,Percent Tot Female Pop Bacehlor and Higher degree/>25yr Tot Female Pop,%,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v305,Male/female ratio pop 25 and older of Total Housing Female,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v306,Tot Female_Male Ratio No  HS  School degree,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v307,Tot Female_Male Ratio High school Diploma,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match; cluster-model predictor
+se_v308,Tot Female_Male associate and some college,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v309,Tot Female_Male Bacherlor and higher of Total Housing Female,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v310,Female Ratio/Male Ratio No  HS  School degree,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v311,Female Ratio/Male Ratio High school Diploma,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v312,Female Ratio/Male Ratio associate and some college,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v313,Female Ratio/Male Ratio Bacherlor and higher,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v314,Total Percent Pop with No HS School degree,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v315,Total Percent Pop with Total High school Diploma,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v316,Total Percent Pop with Total associate and some college,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v317,Total Percent Pop with Total Bacherlor and higher,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v318,100* Owner-occupied housing units: - Less than high school graduate/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v319,100*Owner-occupied housing units: - High school graduate (including equivalency)/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v320,100*Owner-occupied housing units: - Some college or associate's degree/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v321,100*Owner-occupied housing units: - Bachelor's degree or higher/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v322,100*Renter-occupied housing units: - Less than high school graduate/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v323,100*Renter-occupied housing units: - High school graduate (including equivalency)/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v324,100*Renter-occupied housing units: - Some college or associate's degree/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v325,100*Renter-occupied housing units: - Bachelor's degree or higher/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v326,100* Owner-occupied housing units: - Less than high school graduate/Tot Owner Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v327,100*Owner-occupied housing units: - High school graduate (including equivalency)/Tot Owner Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v328,100*Owner-occupied housing units: - Some college or associate's degree/Tot Owner Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v329,100*Owner-occupied housing units: - Bachelor's degree or higher/Tot Owner Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v330,100*Renter-occupied housing units: - Less than high school graduate/Tot Renter Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v331,100*Renter-occupied housing units: - High school graduate (including equivalency)/Tot Renter Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v332,100*Renter-occupied housing units: - Some college or associate's degree/Tot Renter Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v333,100*Renter-occupied housing units: - Bachelor's degree or higher/Tot Renter Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v334,Ratio Renter-occupied housing units to Owner-occupied housing units - Less than high school graduate,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v335,Ratio Renter-occupied housing units to Owner-occupied housing units  - High school graduate (including equivalency),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v336,Ratio Renter-occupied housing units to Owner-occupied housing units  - Some college or associate's degree,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v337,Ratio Renter-occupied housing units to Owner-occupied housing units  - Bachelor's degree or higher,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v338,Ratio of Owner Occupied/Renter Occupied: Less than high school graduate,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v339,Ratio of Owner Occupied/Renter Occupied:  High school graduate (including equivalency),see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v340,Ratio of Owner Occupied/Renter Occupied:  Some college or associate's degree,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v341,Ratio of Owner Occupied/Renter Occupied:  Bachelor's degree or higher,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v342,100* Overall Estimate Less than high school graduate/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v343,100*Overall Estimate;  High school graduate (including equivalency)/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v344,100*Overall Estimate- Some college or associate's degree/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v345,100*Overall Estimate  Bachelor's degree or higher/Tot Occupied housing units,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v346,"Estimate; INCOME AND BENEFITS (IN 2011-(dol, attached of Total Housing Income",see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v347,"Estimate; INCOME AND BENEFITS (IN 2011-(dol, attached of Total Housing Income [dup 2]",see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v348,"Estimate; INCOME AND BENEFITS (IN 2011-(dol, attached of Total Housing Income [dup 3]",see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v349,Population density,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v350,Housing units density,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v351,main rows,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v352,Estimate; Median year structure built,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v353,Area,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v354,Population density [dup 2],see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v355,Total Population,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+se_v356,Binary representation of year built,see label,May_Zip_Tract_regular_June_2.xlsx (2011 ACS/Census),Direct ZIP5 match
+landpro_coverage_frac,Share of ZIP area covered by LandPro polygons,sq ft / sq ft,ARC LandPro 2012 (Atlanta Regional Commission),Sum of ZIP x LandPro overlay piece areas / zip_area_sqft; all ZIPs
+lu_pct_developed,Share of the LandPro-covered ZIP area in DE3 group DEVELOPED,% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99"
+lu_pct_undeveloped,Share of the LandPro-covered ZIP area in DE3 group UNDEVELOPED,% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99"
+lu_pct_undevelopable,Share of the LandPro-covered ZIP area in DE3 group UNDEVELOPABLE,% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99"
+lu_pct_agriculture,Share of the LandPro-covered ZIP area in land-use class AGRICULTURE (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_airport,Share of the LandPro-covered ZIP area in land-use class AIRPORT (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_cemeteries,Share of the LandPro-covered ZIP area in land-use class CEMETERIES (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_church,Share of the LandPro-covered ZIP area in land-use class CHURCH (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_commercial,Share of the LandPro-covered ZIP area in land-use class COMMERCIAL (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_cst,Share of the LandPro-covered ZIP area in land-use class CST (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_exposed_rock,Share of the LandPro-covered ZIP area in land-use class EXPOSED_ROCK (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_forest,Share of the LandPro-covered ZIP area in land-use class FOREST (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_golf_courses,Share of the LandPro-covered ZIP area in land-use class GOLF_COURSES (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_ind_com,Share of the LandPro-covered ZIP area in land-use class IND/COM (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_industrial,Share of the LandPro-covered ZIP area in land-use class INDUSTRIAL (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_inst_extensive,Share of the LandPro-covered ZIP area in land-use class INST_EXTENSIVE (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_inst_intensive,Share of the LandPro-covered ZIP area in land-use class INST_INTENSIVE (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_landfills,Share of the LandPro-covered ZIP area in land-use class LANDFILLS (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_ltd_access,Share of the LandPro-covered ZIP area in land-use class LTD_ACCESS (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_parks,Share of the LandPro-covered ZIP area in land-use class PARKS (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_park_land,Share of the LandPro-covered ZIP area in land-use class PARK_LAND (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_quarries,Share of the LandPro-covered ZIP area in land-use class QUARRIES (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_reservoirs,Share of the LandPro-covered ZIP area in land-use class RESERVOIRS (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_res_high,Share of the LandPro-covered ZIP area in land-use class RES_HIGH (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_res_low,Share of the LandPro-covered ZIP area in land-use class RES_LOW (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_res_med,Share of the LandPro-covered ZIP area in land-use class RES_MED (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_res_mobile,Share of the LandPro-covered ZIP area in land-use class RES_MOBILE (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_res_multi,Share of the LandPro-covered ZIP area in land-use class RES_MULTI (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_rivers,Share of the LandPro-covered ZIP area in land-use class RIVERS (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_tcu,Share of the LandPro-covered ZIP area in land-use class TCU (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_transitional,Share of the LandPro-covered ZIP area in land-use class TRANSITIONAL (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_urban_other,Share of the LandPro-covered ZIP area in land-use class URBAN_OTHER (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+lu_pct_wetlands,Share of the LandPro-covered ZIP area in land-use class WETLANDS (LU_NAME),% of covered area,ARC LandPro 2012 (Atlanta Regional Commission),"ZIP x LandPro overlay, EPSG:2240 areas; % of covered area; NaN unless landpro_coverage_frac >= 0.99; 0 where absent"
+aq_o3_mda8_jul2010,"Ozone, maximum daily 8-hour average (O3_MDA8), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_o3_avg_jul2010,"Ozone, daily average (O3_AVG), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_co_avg_jul2010,"Carbon monoxide (CO_AVG), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_no_avg_jul2010,"Nitric oxide (NO_AVG), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_no2_avg_jul2010,"Nitrogen dioxide (NO2_AVG), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_so2_avg_jul2010,"Sulfur dioxide (SO2_AVG), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_ch2o_avg_jul2010,"Formaldehyde (CH2O_AVG), July 2010 mean of daily values",ppb,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm10_avg_jul2010,"PM10 (PM10_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm25_avg_jul2010,"PM2.5 (PM25_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm25_so4_avg_jul2010,"PM2.5 sulfate (PM25_SO4_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm25_no3_avg_jul2010,"PM2.5 nitrate (PM25_NO3_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm25_nh4_avg_jul2010,"PM2.5 ammonium (PM25_NH4_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm25_oc_avg_jul2010,"PM2.5 organic carbon (PM25_OC_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+aq_pm25_ec_avg_jul2010,"PM2.5 elemental carbon (PM25_EC_AVG), July 2010 mean of daily values",ug/m3,"EPA EQUATES CMAQ v5.3.2, 12US1 12 km grid, July 2010",Mean of 31 daily values per cell; area-weighted mean over ZIP x grid-cell overlay (EPSG:2240)
+rs_ndvi_mean,"NDVI, 2011-2012 composite, ZIP mean",NDVI (-1 to 1),Landsat 4-5 TM NDVI composite 2011-2012 (ga_ndvi_2011_2012-002.tif),"Zonal mean (as ArcGIS Zonal Statistics, MEAN): mean of the valid pixels whose centre lies in the ZIP, native EPSG:4326 grid"
+rs_impervious_pct_mean,"Fractional impervious surface 2011, ZIP mean",%,MRLC Annual NLCD fractional impervious surface 2011 (ga_impervious_2011.tif),"Zonal mean (as ArcGIS Zonal Statistics, MEAN): mean of the valid pixels whose centre lies in the ZIP, native EPSG:4326 grid"
+rs_lst_c_mean,"Land surface temperature, 2011-2012 composite, ZIP mean",deg C (assumed),Landsat 4-5 TM Level-2 surface temperature composite 2011-2012 (ga_lst_2011_2012-001.tif),"Zonal mean (as ArcGIS Zonal Statistics, MEAN): mean of the valid pixels whose centre lies in the ZIP, native EPSG:4326 grid"
+rs_lai_mean,"Leaf area index, 2011-2012 composite, mean over valid (vegetated) pixels",m2/m2,500 m LAI composite 2011-2012 (ga_lai_2011_2012.tif),"Zonal mean (as ArcGIS Zonal Statistics, MEAN): mean of the valid pixels whose centre lies in the ZIP, native EPSG:4326 grid"
+rs_lai_valid_frac,Share of the ZIP's LAI pixels with a valid (vegetated) value,pixels / pixels,500 m LAI composite 2011-2012,Valid LAI pixels / all LAI pixels whose centre lies in the ZIP

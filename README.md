@@ -35,8 +35,9 @@ regenerate them after adding data.
 
 ## How to reproduce
 
-The input data is not in the repository: `data/` is gitignored, and some inputs are study data that is
-not redistributed. See the **"Reproducing this notebook"** cell at the top of
+The ZIP-level master table (`data/interim/zipcode_joined.gpkg`, 190 ZIPs) and its data dictionary
+(`data/processed/zipcode_data_dictionary.csv`) are committed. The other input data is not in the repository:
+`data/` is otherwise gitignored, and some inputs are study data that is not redistributed. See the **"Reproducing this notebook"** cell at the top of
 `notebooks/01_data_preparation.ipynb` for:
 - the environment setup (`pip install -r requirements.txt`, with pinned versions);
 - the list of raw input files, their expected paths and their sources;
@@ -45,7 +46,7 @@ not redistributed. See the **"Reproducing this notebook"** cell at the top of
 ## Repo layout
 
 ```
-data/            # gitignored
+data/            # gitignored, except the master table and data dictionary
 ├── raw/         # inputs, never modified (vectors/, rasters/, tables/)
 ├── interim/     # CRS-standardised layers, base and joined ZIP tables, codebook
 └── processed/   # final outputs (data dictionary)
