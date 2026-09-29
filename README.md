@@ -15,13 +15,14 @@ consistent when aggregated from ZIP Code to Census Tract level.
   - EPA walkability
   - Microsoft building footprints
   - 2011 ACS/Census socioeconomic variables
+  - ARC LandPro 2012 land use
+  - EPA EQUATES CMAQ air quality (July 2010)
+  - remote-sensing rasters (NDVI, impervious surface, land surface temperature, leaf area index):
+    zonal mean per ZIP
 - **Pending:**
-  - remote-sensing rasters (being re-downloaded)
-  - land use
-  - MARTA bus
   - roads
-  - air quality
   - the tract-level thread
+- **Dropped from scope:** MARTA bus, NLCD tree canopy.
 
 ## Workflow
 

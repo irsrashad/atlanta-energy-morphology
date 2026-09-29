@@ -40,7 +40,7 @@ FONT = setup_fonts()
 # ---------------------------------------------------------------------------
 # Shared data spec (single source of truth)
 # ---------------------------------------------------------------------------
-N_ZIPS, N_VARS = 190, 443
+N_ZIPS, N_VARS = 190, 448
 
 STUDY_FRAME = {
     "name": "Study frame",
@@ -123,19 +123,20 @@ DATASETS = [
      "slide_source": "Air quality (EPA model)", "slide_detail": "12 km grid, July 2010",
      "slide_join": "July mean per 12 km grid square\n→ area-weighted average (no interpolation)",
      "slide_out": "14 pollutant averages"},
+    {"name": "Remote sensing", "source": "Landsat NDVI & LST, NLCD impervious, LAI",
+     "native": "4 Georgia rasters, 2011–12 (30 m; LAI 500 m)",
+     "preprocessing": "Kept on native EPSG:4326 grid (no resampling); LAI fill 25.5 → no data",
+     "join": "ZIPs rasterized onto the grid (pixel centre in ZIP)",
+     "aggregation": "Zonal mean of valid pixels (= ArcGIS Zonal Statistics, MEAN)",
+     "outputs": "rs_ndvi, rs_impervious, rs_lst, rs_lai means + LAI valid share (LAI: 179/190 ZIPs)",
+     "status": "done", "family": "env",
+     "slide_source": "Satellite rasters", "slide_detail": "NDVI, impervious, LST, LAI",
+     "slide_join": "Average of the pixels inside each ZIP",
+     "slide_out": "4 raster means"},
     # Planned (drawn dashed)
-    {"name": "Remote sensing", "source": "NDVI, impervious, LST, LAI",
-     "method": "Zonal mean over each ZIP", "status": "planned", "family": "env",
-     "slide_label": "Satellite rasters → zonal mean"},
     {"name": "Roads (TIGER 2012)", "source": "Primary/secondary roads",
      "method": "Road length / ZIP area", "status": "planned", "family": "transport",
      "slide_label": "Major roads → length per area"},
-    {"name": "MARTA bus", "source": "MARTA open data",
-     "method": "Method to be decided", "status": "planned", "family": "transport",
-     "slide_label": "MARTA bus"},
-    {"name": "Tree canopy", "source": "NLCD",
-     "method": "Method to be decided", "status": "planned", "family": "env",
-     "slide_label": "Tree canopy (NLCD)"},
 ]
 
 MASTER = {
@@ -453,7 +454,7 @@ def draw_slide():
         ax.plot([x, x + w], [y_hdr - 0.22, y_hdr - 0.22], color="0.6", lw=1.2)
 
     rows = [STUDY_FRAME] + [d for d in DATASETS if d["status"] == "done"]
-    h_row, g_row = 0.58, 0.05
+    h_row, g_row = 0.54, 0.04
     y = y_hdr - 0.3
     mids = []
     for d in rows:
@@ -501,14 +502,14 @@ def draw_slide():
     planned = [d for d in DATASETS if d["status"] == "planned"]
     y_pt, y_pb = y_rows_bottom - 0.2, 0.15
     h_p = y_pt - y_pb
-    x_p, w_p = cols[0][0], cols[1][0] + cols[1][1] - cols[0][0]
+    x_p, w_p = cols[0][0], 5.2                     # one planned item: leave room for the key
     box(ax, x_p, y_pb, w_p, h_p, fc="white", ec="0.35", lw=1.8, ls="--", r=0.1)
     ax.text(x_p + 0.25, y_pb + h_p / 2, "Planned\nnext", fontsize=16, weight="bold",
             color="0.3", va="center", ha="left", linespacing=1.15)
     x_items = [x_p + 1.6, x_p + 5.1]
     for i, d in enumerate(planned):
         xi = x_items[i // 2]
-        yi = y_pb + h_p * (0.72 if i % 2 == 0 else 0.28)
+        yi = y_pb + h_p * (0.5 if len(planned) == 1 else 0.72 if i % 2 == 0 else 0.28)
         col = FAMILIES[d["family"]][1]
         ax.add_patch(Rectangle((xi, yi - 0.1), 0.2, 0.2, fc=tint(col, 0.3), ec=col, lw=1.2,
                                ls="--", zorder=4))
@@ -516,12 +517,12 @@ def draw_slide():
                 zorder=5)
 
     # Colour key (data family), right of the planned box
-    x_k = cols[2][0]
+    x_k = x_p + w_p + 0.45
     ax.text(x_k, y_pt, "Colour = data family", fontsize=13.5, weight="bold", va="top",
             color="0.2")
     for i, (label, col) in enumerate(FAMILIES.values()):
-        xk = x_k + (i // 3) * 2.2
-        yk = y_pt - 0.42 - (i % 3) * 0.26
+        xk = x_k + (i // 2) * 2.35
+        yk = y_pt - 0.42 - (i % 2) * 0.28
         ax.add_patch(Rectangle((xk, yk - 0.09), 0.3, 0.18, fc=tint(col), ec=col, lw=1.6))
         ax.text(xk + 0.42, yk, label, fontsize=fs_note, va="center")
     save(fig, "workflow_slide", ["png", "svg"], dpi=150)
