@@ -40,7 +40,7 @@ FONT = setup_fonts()
 # ---------------------------------------------------------------------------
 # Shared data spec (single source of truth)
 # ---------------------------------------------------------------------------
-N_ZIPS, N_VARS = 190, 448
+N_ZIPS, N_VARS = 190, 466
 
 STUDY_FRAME = {
     "name": "Study frame",
@@ -113,6 +113,16 @@ DATASETS = [
      "slide_join": "% of ZIP area in each class",
      "slide_note": "(broken outlines repaired first)",
      "slide_out": "Land-use shares (142 ZIPs)"},
+    {"name": "Land cover", "source": "NLCD 2011 land cover (USGS)",
+     "native": "30 m CONUS raster, 15 classes in study area",
+     "preprocessing": "Kept on native Albers equal-area grid (no resampling)",
+     "join": "ZIPs rasterized onto the grid (pixel centre in ZIP)",
+     "aggregation": "Class share: class pixels / classified pixels (equal-area, so = area share)",
+     "outputs": "15 nlcd11_pct_* + developed & forest totals (all 190 ZIPs)",
+     "status": "done", "family": "landuse",
+     "slide_source": "Land cover (NLCD 2011)", "slide_detail": "30 m satellite raster",
+     "slide_join": "% of ZIP pixels in each class",
+     "slide_out": "Land-cover shares (190 ZIPs)"},
     {"name": "Air quality", "source": "EPA EQUATES CMAQ",
      "native": "July 2010: 12 km grid, 31 days",
      "preprocessing": "Average 31 days per cell → rebuild each cell-centre point as its 12 km "
@@ -162,7 +172,7 @@ FAMILIES = {
     "transport": ("Transport", "#0072B2"),
     "built": ("Built form", "#E69F00"),
     "socio": ("Socioeconomic", "#CC79A7"),
-    "landuse": ("Land use", "#009E73"),
+    "landuse": ("Land use / cover", "#009E73"),
     "env": ("Environment", "#56B4E9"),
 }
 
@@ -454,7 +464,7 @@ def draw_slide():
         ax.plot([x, x + w], [y_hdr - 0.22, y_hdr - 0.22], color="0.6", lw=1.2)
 
     rows = [STUDY_FRAME] + [d for d in DATASETS if d["status"] == "done"]
-    h_row, g_row = 0.54, 0.04
+    h_row, g_row = 0.49, 0.035
     y = y_hdr - 0.3
     mids = []
     for d in rows:

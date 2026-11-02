@@ -19,7 +19,8 @@ consistent when aggregated from ZIP Code to Census Tract level.
   - EPA EQUATES CMAQ air quality (July 2010)
   - remote-sensing rasters (NDVI, impervious surface, land surface temperature, leaf area index):
     zonal mean per ZIP
-    
+  - NLCD 2011 land cover: class shares per ZIP, complete for all 190 ZIPs (fills the LandPro gaps)
+
 ## Workflow
 
 ![ZIP-level data pipeline: input data, preprocessing, spatial join, aggregation and outputs](figures/workflow_paper.png)
