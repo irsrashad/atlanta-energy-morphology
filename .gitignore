@@ -72,3 +72,9 @@ docs/atlanta_project_claude_code_handoff.md
 !data/processed/zipcode_data_dictionary.csv
 !data/processed/zipcode_master.csv
 !data/processed/zipcode_master.xlsx
+
+# Tract-level master table and its data dictionary (committed)
+!data/interim/tract_joined.gpkg
+!data/processed/tract_data_dictionary.csv
+!data/processed/tract_master.csv
+!data/processed/tract_master.xlsx
