@@ -36,12 +36,18 @@ Census-tract level:
 
 ![Tract-level data pipeline: input data, preprocessing, spatial join, aggregation and outputs](figures/workflow_tract_paper.png)
 
+ZIP-to-tract comparison:
+
+![ZIP-to-tract comparison workflow: ZIP estimates, ZIP-to-tract table, tract estimates, agreement tiers](figures/workflow_comparison_paper.png)
+
 Vector versions for print: [`figures/workflow_paper.pdf`](figures/workflow_paper.pdf) and
-[`figures/workflow_tract_paper.pdf`](figures/workflow_tract_paper.pdf). Simplified 16:9 versions for
+[`figures/workflow_tract_paper.pdf`](figures/workflow_tract_paper.pdf) and
+[`figures/workflow_comparison_paper.pdf`](figures/workflow_comparison_paper.pdf). Simplified 16:9 versions for
 slides: [`figures/workflow_slide.png`](figures/workflow_slide.png) and
-[`figures/workflow_tract_slide.png`](figures/workflow_tract_slide.png). All of them are drawn by
+[`figures/workflow_tract_slide.png`](figures/workflow_tract_slide.png) and
+[`figures/workflow_comparison_slide.png`](figures/workflow_comparison_slide.png). All of them are drawn by
 [`scripts/make_workflow_diagrams.py`](scripts/make_workflow_diagrams.py); run it from the repo root
-(`--unit zip`, the default, or `--unit tract`) to regenerate them after adding data.
+(`--unit zip`, the default, `--unit tract` or `--unit comparison`) to regenerate them after adding data.
 
 ## How to reproduce
 

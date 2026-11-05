@@ -78,3 +78,15 @@ docs/atlanta_project_claude_code_handoff.md
 !data/processed/tract_data_dictionary.csv
 !data/processed/tract_master.csv
 !data/processed/tract_master.xlsx
+
+# ZIP-to-tract comparison outputs (committed)
+!data/processed/zip_to_tract_comparison.csv
+!data/processed/zip_to_tract_comparison_high.csv
+!data/processed/zip_to_tract_comparison_low.csv
+!data/processed/zip_to_tract_summary.csv
+
+# ZIP-to-tract comparison outputs, Census 2010 crosswalk run (committed)
+!data/processed/zip_to_tract_comparison_census2010.csv
+!data/processed/zip_to_tract_comparison_high_census2010.csv
+!data/processed/zip_to_tract_comparison_low_census2010.csv
+!data/processed/zip_to_tract_summary_census2010.csv
